@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String?
+  progress  Progress[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Word {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  english     String
+  hebrew      String
+  example     String
+  category    String
+  difficulty  String   // 'easy' | 'medium' | 'hard'
+  progress    Progress[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("words")
+}
+
+model Progress {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  wordId      String   @db.ObjectId
+  status      String   // 'new' | 'learning' | 'reviewing' | 'mastered'
+  nextReview  DateTime?
+  reviewCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id])
+  word        Word     @relation(fields: [wordId], references: [id])
+
+  @@map("progress")
+} 
