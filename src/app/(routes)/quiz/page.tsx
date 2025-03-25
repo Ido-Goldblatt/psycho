@@ -1,87 +1,83 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 
-export default function QuizPage() {
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState('5:00');
-
+export default function QuizHome() {
   return (
-    <div className="max-w-4xl mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">תרגול</h1>
-        <div className="text-lg font-medium text-gray-600">
-          שאלה {currentQuestion} מתוך 10
-        </div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+      <div className="text-center max-w-3xl mx-auto px-6">
+        <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          תרגול אוצר מילים
+        </h1>
+        <p className="text-xl text-gray-600 mb-12">
+          בחר את מצב התרגול המועדף עליך
+        </p>
 
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-lg font-medium text-gray-700">ניקוד: {score}</span>
-          <span className="text-lg font-medium text-gray-700">זמן נותר: {timeLeft}</span>
-        </div>
-
-        <div className="space-y-6">
-          <div className="text-xl text-gray-800 mb-6">
-            בחר את התרגום הנכון למילה: "Ephemeral"
-          </div>
-
-          <div className="space-y-4">
-            {[
-              'קבוע, יציב',
-              'חולף, זמני',
-              'מהיר, זריז',
-              'איטי, מתון'
-            ].map((answer, index) => (
-              <button
-                key={index}
-                className="w-full text-right p-4 border-2 border-gray-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                {answer}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex justify-between mt-8">
-          <button
-            disabled={currentQuestion === 1}
-            className="px-6 py-3 text-base font-medium rounded-lg border-2 border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Link
+            href="/quiz/practice"
+            className="group p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-100 hover:border-indigo-200 hover:bg-white/80 transition-all duration-300"
           >
-            שאלה קודמת
-          </button>
-          <button
-            className="px-6 py-3 text-base font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
-          >
-            שאלה הבאה
-          </button>
-        </div>
-      </div>
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">תרגול חופשי</h2>
+              <p className="text-gray-600 text-center">
+                תרגול מילים חדשות ומעקב אחר ההתקדמות. מתאים לאימון יומיומי ולמידת מילים חדשות
+              </p>
+            </div>
+          </Link>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">סטטיסטיקה</h2>
-          <div className="space-y-3">
-            <p className="text-gray-600">תשובות נכונות: {score}/10</p>
-            <p className="text-gray-600">זמן שנותר: {timeLeft}</p>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
-                style={{ width: `${(currentQuestion / 10) * 100}%` }}
-              ></div>
+          <Link
+            href="/quiz/review"
+            className="group p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-100 hover:border-green-200 hover:bg-white/80 transition-all duration-300"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">חזרה ושינון</h2>
+              <p className="text-gray-600 text-center">
+                התמקדות במילים שדורשות חזרה. חיזוק הזיכרון ושיפור היכולת
+              </p>
+            </div>
+          </Link>
+
+          <Link
+            href="/quiz/stats"
+            className="group p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-100 hover:border-purple-200 hover:bg-white/80 transition-all duration-300"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">סטטיסטיקות</h2>
+              <p className="text-gray-600 text-center">
+                צפייה בהתקדמות הלמידה, מעקב אחר שיפורים וזיהוי תחומים לשיפור
+              </p>
+            </div>
+          </Link>
+
+          <div className="group p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-100">
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">בקרוב</h2>
+              <p className="text-gray-600 text-center">
+                מצב אתגר עם מגבלת זמן ורמות קושי. עקבו אחר העדכונים!
+              </p>
             </div>
           </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">טיפים לפתרון</h2>
-          <ul className="space-y-2 text-gray-600 list-disc list-inside">
-            <li>קרא את השאלה בעיון לפני שתענה</li>
-            <li>שים לב להקשר ולדוגמאות</li>
-            <li>אם אינך בטוח, נסה לפסול תשובות שבוודאות אינן נכונות</li>
-            <li>נהל את הזמן שלך בחוכמה</li>
-          </ul>
         </div>
       </div>
     </div>

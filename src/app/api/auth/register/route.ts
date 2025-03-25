@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import connectDB from '@/lib/db';
+import User from '@/models/User';
 import { hashPassword, generateToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
 
@@ -25,10 +26,11 @@ export async function POST(request: Request) {
       );
     }
 
+    // Connect to MongoDB
+    await connectDB();
+
     // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return NextResponse.json(
@@ -40,17 +42,15 @@ export async function POST(request: Request) {
     // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create user without transaction
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
+    // Create user
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      name,
     });
 
     // Generate token
-    const token = generateToken(user.id);
+    const token = generateToken(user._id.toString());
     
     // Set cookie
     cookies().set('auth-token', token, {
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       user: {
-        id: user.id,
+        id: user._id,
         email: user.email,
         name: user.name,
       },

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import connectDB from '@/lib/db';
+import User from '@/models/User';
 import { comparePasswords, generateToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
 
@@ -8,10 +9,11 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { email, password } = body;
 
+    // Connect to MongoDB
+    await connectDB();
+
     // Find user
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return NextResponse.json(
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     // Generate token
-    const token = generateToken(user.id);
+    const token = generateToken(user._id.toString());
     
     // Set cookie
     cookies().set('auth-token', token, {
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       user: {
-        id: user.id,
+        id: user._id,
         email: user.email,
         name: user.name,
       },

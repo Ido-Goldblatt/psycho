@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import connectDB from '@/lib/db';
+import Progress from '@/models/Progress';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const progress = await prisma.progress.create({
-      data: {
-        userId: body.userId,
-        wordId: body.wordId,
-        status: body.status,
-        nextReview: body.nextReview ? new Date(body.nextReview) : null,
-      },
+    await connectDB();
+    
+    const progress = await Progress.create({
+      userId: body.userId,
+      wordId: body.wordId,
+      status: body.status || (body.isCorrect ? 'learned' : 'in_progress'),
+      nextReview: body.nextReview ? new Date(body.nextReview) : null,
+      isCorrect: body.isCorrect,
     });
     return NextResponse.json(progress);
   } catch (error) {
@@ -27,14 +29,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
-    const progress = await prisma.progress.findMany({
-      where: {
-        userId: userId,
-      },
-      include: {
-        word: true,
-      },
-    });
+    await connectDB();
+    const progress = await Progress.find({ userId })
+      .populate('wordId')
+      .sort({ createdAt: -1 })
+      .exec();
 
     return NextResponse.json(progress);
   } catch (error) {
@@ -45,18 +44,21 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const progress = await prisma.progress.update({
-      where: {
-        id: body.id,
-      },
-      data: {
-        status: body.status,
-        nextReview: body.nextReview ? new Date(body.nextReview) : null,
-        reviewCount: {
-          increment: 1,
+    await connectDB();
+    
+    const progress = await Progress.findByIdAndUpdate(
+      body.id,
+      {
+        $set: {
+          status: body.status || (body.isCorrect ? 'learned' : 'in_progress'),
+          nextReview: body.nextReview ? new Date(body.nextReview) : null,
+          isCorrect: body.isCorrect,
         },
+        $inc: { reviewCount: 1 }
       },
-    });
+      { new: true }
+    );
+    
     return NextResponse.json(progress);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update progress' }, { status: 500 });
