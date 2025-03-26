@@ -21,6 +21,19 @@ const WordSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['new', 'learning', 'known', 'skip'],
+    default: 'new'
+  },
+  lastReviewed: {
+    type: Date,
+    default: null
+  },
+  nextReviewDate: {
+    type: Date,
+    default: Date.now
+  }
 }, {
   timestamps: true,
 });

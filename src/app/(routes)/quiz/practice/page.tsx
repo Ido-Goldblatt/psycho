@@ -454,10 +454,12 @@ export default function PracticeMode() {
                 <h3 className="text-3xl font-bold text-gray-900 mb-4">
                   {quizState.currentWord.hebrew}
                 </h3>
-                <p 
-                  className="text-gray-600"
-                  dangerouslySetInnerHTML={{ __html: generateSentence(quizState.currentWord) }}
-                ></p>
+                {quizState.showCorrectAnswer && (
+                  <p 
+                    className="text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: generateSentence(quizState.currentWord) }}
+                  ></p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-4">

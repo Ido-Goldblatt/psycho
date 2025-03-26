@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="he" dir="rtl">
       <body className={`${inter.className} min-h-screen bg-gray-50`}>
         <Navbar />
-        <main className="container mx-auto px-4 py-8">
+        <main className="pt-16">
           {children}
         </main>
       </body>

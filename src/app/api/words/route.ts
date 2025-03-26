@@ -148,18 +148,73 @@ const advancedWords = [
   }
 ];
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    console.log('Connecting to DB...');
     await connectDB();
-    let words = await Word.find().exec();
+    console.log('Connected to DB successfully');
     
-    // If no words exist, seed the database with sample words
-    if (words.length === 0) {
-      words = await Word.insertMany([...sampleWords, ...advancedWords]);
+    // Get page and limit from query parameters
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const skip = (page - 1) * limit;
+
+    console.log('Query params:', { page, limit, skip });
+
+    // Get total count and paginated words that are due for review
+    const query = {
+      $or: [
+        { status: { $in: ['new', null] } },
+        { nextReviewDate: { $lte: new Date() } }
+      ]
+    };
+
+    console.log('Executing query:', JSON.stringify(query));
+    
+    // First check if we need to seed the database
+    const total = await Word.countDocuments();
+    console.log('Total words in DB:', total);
+    
+    if (total === 0) {
+      console.log('No words found, seeding database...');
+      const sampleWordsWithDefaults = [...sampleWords, ...advancedWords].map(word => ({
+        ...word,
+        status: 'new',
+        lastReviewed: null,
+        nextReviewDate: new Date()
+      }));
+      
+      await Word.insertMany(sampleWordsWithDefaults);
+      console.log('Seeded database with words');
     }
+
+    // Now get the paginated results
+    const words = await Word.find(query)
+      .sort({ nextReviewDate: 1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
     
-    return NextResponse.json(words);
+    // Get the total count for pagination
+    const totalMatchingQuery = await Word.countDocuments(query);
+    
+    console.log('Returning words:', {
+      count: words.length,
+      page,
+      totalMatchingQuery,
+      hasMore: skip + words.length < totalMatchingQuery
+    });
+
+    return NextResponse.json({
+      words,
+      total: totalMatchingQuery,
+      page,
+      totalPages: Math.ceil(totalMatchingQuery / limit),
+      hasMore: skip + words.length < totalMatchingQuery
+    });
   } catch (error) {
+    console.error('API Error:', error);
     return NextResponse.json({ error: 'Failed to fetch words' }, { status: 500 });
   }
 }
