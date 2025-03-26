@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Word {
   _id: string;
@@ -8,244 +9,251 @@ interface Word {
   hebrew: string;
   example: string;
   category: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: string;
+  status?: 'new' | 'learning' | 'known' | 'skip';
+  lastReviewed?: Date;
+  nextReviewDate?: Date;
 }
 
+// Temporary sample words
+const sampleWords: Word[] = [
+  {
+    _id: '1',
+    english: "Abandon",
+    hebrew: "לנטוש",
+    example: "The crew had to abandon the sinking ship.",
+    category: "Nouns",
+    difficulty: "Easy"
+  },
+  {
+    _id: '2',
+    english: "Brilliant",
+    hebrew: "מבריק",
+    example: "She came up with a brilliant solution to the problem.",
+    category: "Adjectives",
+    difficulty: "Medium"
+  },
+  {
+    _id: '3',
+    english: "Cautious",
+    hebrew: "זהיר",
+    example: "Be cautious when driving in bad weather.",
+    category: "Adverbs",
+    difficulty: "Easy"
+  },
+  {
+    _id: '4',
+    english: "Diligent",
+    hebrew: "חרוץ",
+    example: "The diligent student studied every day.",
+    category: "Adjectives",
+    difficulty: "Medium"
+  },
+  {
+    _id: '5',
+    english: "Eager",
+    hebrew: "להוט",
+    example: "The eager puppy wagged its tail.",
+    category: "Adjectives",
+    difficulty: "Easy"
+  }
+];
+
 export default function VocabularyPage() {
-  const [words, setWords] = useState<Word[]>([]);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [reviewMode, setReviewMode] = useState<'learn' | 'review'>('learn');
-  const [isLoading, setIsLoading] = useState(true);
+  const [words, setWords] = useState<Word[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isRandomMode, setIsRandomMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const fetchWords = async (page: number = 1, append: boolean = false) => {
+    // Prevent duplicate requests
+    if (isFetching) return;
+    
+    try {
+      setIsFetching(true);
+      setError(null);
+      if (!append) {
+        setLoading(true);
+      }
+      
+      console.log('Fetching words from API...', { page, append });
+      const response = await fetch(`/api/words?page=${page}&limit=20`);
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch words');
+      }
+      
+      console.log('Fetched words:', data);
+      
+      if (append) {
+        setWords(prev => [...prev, ...data.words]);
+      } else {
+        setWords(data.words);
+        if (data.words.length > 0) {
+          setCurrentWord(data.words[0]);
+        }
+      }
+      
+      setHasMore(data.hasMore);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Error fetching words:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch words');
+      if (!append) {
+        setWords([]);
+        setCurrentWord(null);
+      }
+    } finally {
+      setLoading(false);
+      setIsLoadingMore(false);
+      setIsFetching(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchWords() {
-      try {
-        const response = await fetch('/api/words');
-        if (!response.ok) {
-          throw new Error('Failed to fetch words');
-        }
-        const data = await response.json();
-        setWords(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load vocabulary words. Please try again later.');
-      } finally {
-        setIsLoading(false);
+    // Only fetch on initial mount
+    fetchWords(1, false);
+  }, []); // Empty dependency array to run only once
+
+  const handleAction = async (action: 'known' | 'learning' | 'skip') => {
+    if (!currentWord) return;
+
+    try {
+      setError(null);
+      // Save the user's response
+      const response = await fetch(`/api/words/${currentWord._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: action }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update word status');
       }
-    }
 
-    fetchWords();
-  }, []);
-
-  const categories = ['all', ...new Set(words.map(word => word.category))];
-  const filteredWords = selectedCategory === 'all' 
-    ? words 
-    : words.filter(word => word.category === selectedCategory);
-
-  const getRandomWordIndex = () => {
-    return Math.floor(Math.random() * filteredWords.length);
-  };
-
-  const currentWord = filteredWords[currentWordIndex];
-
-  const nextWord = () => {
-    setShowTranslation(false);
-    if (isRandomMode) {
-      setCurrentWordIndex(getRandomWordIndex());
-    } else {
-      setCurrentWordIndex((prev) => (prev + 1) % filteredWords.length);
+      // Remove current word from list
+      const nextWords = words.filter(w => w._id !== currentWord._id);
+      setWords(nextWords);
+      
+      // If we're running low on words and there are more to fetch, load the next page
+      if (nextWords.length < 5 && hasMore && !isLoadingMore && !isFetching) {
+        setIsLoadingMore(true);
+        await fetchWords(currentPage + 1, true);
+      }
+      
+      setCurrentWord(nextWords[0] || null);
+      setShowTranslation(false);
+    } catch (error) {
+      console.error('Error updating word status:', error);
+      setError(error instanceof Error ? error.message : 'Failed to update word status');
     }
   };
 
-  const previousWord = () => {
-    setShowTranslation(false);
-    if (!isRandomMode) {
-      setCurrentWordIndex((prev) => (prev - 1 + filteredWords.length) % filteredWords.length);
-    }
-  };
-
-  const toggleRandomMode = () => {
-    setIsRandomMode(!isRandomMode);
-    if (!isRandomMode) {
-      setCurrentWordIndex(getRandomWordIndex());
-    }
-  };
-
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="max-w-4xl mx-auto py-8 flex justify-center items-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading vocabulary...</p>
-        </div>
+      <div className="flex items-center justify-center h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto py-8 flex justify-center items-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="text-red-600 text-xl mb-4">⚠️</div>
-          <p className="text-gray-800 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
+      <div className="flex flex-col items-center justify-center h-[50vh] px-4">
+        <h2 className="text-2xl font-bold text-red-600 mb-4">שגיאה!</h2>
+        <p className="text-gray-600 text-center mb-8">{error}</p>
+        <button
+          onClick={() => fetchWords(1, false)}
+          className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          נסה שוב
+        </button>
       </div>
     );
   }
 
-  if (words.length === 0) {
+  if (!currentWord) {
     return (
-      <div className="max-w-4xl mx-auto py-8 flex justify-center items-center min-h-[60vh]">
-        <div className="text-center">
-          <p className="text-gray-800 mb-4">No vocabulary words found.</p>
-        </div>
+      <div className="flex flex-col items-center justify-center h-[50vh] px-4">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">כל הכבוד!</h2>
+        <p className="text-gray-600 text-center mb-8">סיימת את כל המילים להיום. חזור מאוחר יותר לתרגול נוסף.</p>
+        <button
+          onClick={() => {
+            setCurrentPage(1);
+            fetchWords(1, false);
+          }}
+          className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          רענן מילים
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">מילון מונחים</h1>
-        <div className="flex gap-4">
-          <select 
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    <div className="max-w-lg mx-auto py-4 px-4">
+      <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentWord._id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-white rounded-xl shadow-sm p-6 mb-4"
           >
-            {categories.map(category => (
-              <option key={category} value={category}>
-                {category === 'all' ? 'כל הקטגוריות' : category.charAt(0).toUpperCase() + category.slice(1)}
-              </option>
-            ))}
-          </select>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-indigo-600 mb-3">{currentWord.english}</h2>
+              
+              {!showTranslation ? (
+                <button
+                  onClick={() => setShowTranslation(true)}
+                  className="w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  הצג תרגום
+                </button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="space-y-2"
+                >
+                  <p className="text-lg text-gray-800">{currentWord.hebrew}</p>
+                  <p className="text-sm text-gray-600 italic">{currentWord.example}</p>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="flex justify-between gap-3">
           <button
-            onClick={toggleRandomMode}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              isRandomMode 
-                ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+            onClick={() => handleAction('skip')}
+            className="flex-1 py-2 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
           >
-            {isRandomMode ? 'לפי סדר' : 'אקראי'}
+            דלג
           </button>
           <button
-            onClick={() => setReviewMode(mode => mode === 'learn' ? 'review' : 'learn')}
-            className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+            onClick={() => handleAction('learning')}
+            className="flex-1 py-2 px-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm"
           >
-            {reviewMode === 'learn' ? 'מצב חזרה' : 'מצב למידה'}
+            לתרגול
           </button>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-sm font-medium text-gray-500">
-            {isRandomMode ? 'מילה אקראית' : `מילה ${currentWordIndex + 1} מתוך ${filteredWords.length}`}
-          </span>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium
-            ${currentWord.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
-              currentWord.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-red-100 text-red-800'}`}>
-            {currentWord.difficulty === 'easy' ? 'קל' : 
-             currentWord.difficulty === 'medium' ? 'בינוני' : 'מתקדם'}
-          </span>
-        </div>
-
-        <div className="space-y-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-indigo-600 mb-4">{currentWord.english}</h2>
-            
-            {reviewMode === 'learn' ? (
-              <div className="space-y-4">
-                <p className="text-xl text-gray-800">{currentWord.hebrew}</p>
-                <p className="text-gray-600 italic">{currentWord.example}</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {!showTranslation ? (
-                  <button
-                    onClick={() => setShowTranslation(true)}
-                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    הצג תרגום
-                  </button>
-                ) : (
-                  <div className="space-y-4 animate-fade-in">
-                    <p className="text-xl text-gray-800">{currentWord.hebrew}</p>
-                    <p className="text-gray-600 italic">{currentWord.example}</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="flex justify-center gap-4">
-            {!isRandomMode && (
-              <button
-                onClick={previousWord}
-                className="px-6 py-3 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                ← הקודם
-              </button>
-            )}
-            <button
-              onClick={nextWord}
-              className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              {isRandomMode ? 'מילה חדשה' : 'הבא →'}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">התקדמות</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">מילים שנלמדו</span>
-              <span className="text-gray-800 font-medium">{words.length}/100</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-indigo-600 h-2 rounded-full" 
-                style={{ width: `${Math.min((words.length / 100) * 100, 100)}%` }}
-              ></div>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">מילים לחזרה</span>
-              <span className="text-gray-800 font-medium">{Math.floor(words.length * 0.2)}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">קטגוריות</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {categories.filter(cat => cat !== 'all').map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`p-3 rounded-lg text-sm font-medium transition-colors
-                  ${selectedCategory === category 
-                    ? 'bg-indigo-100 text-indigo-700' 
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+          <button
+            onClick={() => handleAction('known')}
+            className="flex-1 py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm"
+          >
+            יודע
+          </button>
         </div>
       </div>
     </div>
