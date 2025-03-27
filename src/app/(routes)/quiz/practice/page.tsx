@@ -101,11 +101,11 @@ export default function PracticeMode() {
         // Fetch words
         const response = await fetch('/api/words');
         const data = await response.json();
-        if (data && data.length > 0) {
-          setWords(data);
+        if (data && data.words && data.words.length > 0) {
+          setWords(data.words);
           
           // Extract unique categories
-          const categories = [...new Set(data.map((word: Word) => word.category))];
+          const categories = [...new Set(data.words.map((word: Word) => word.category))];
           setAvailableCategories(categories.filter((c): c is string => Boolean(c)));
         } else {
           console.error('No words found in database');

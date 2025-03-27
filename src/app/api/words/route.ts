@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Word from '@/models/Word';
+import VocabularyProgress from '@/models/VocabularyProgress';
+import { getCurrentUserId } from '@/lib/auth';
 
 const sampleWords = [
   {
@@ -150,72 +152,54 @@ const advancedWords = [
 
 export async function GET(request: Request) {
   try {
-    console.log('Connecting to DB...');
-    await connectDB();
-    console.log('Connected to DB successfully');
-    
-    // Get page and limit from query parameters
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
-    const skip = (page - 1) * limit;
+    const difficulty = searchParams.get('difficulty') || 'all';
+    const userId = await getCurrentUserId();
 
-    console.log('Query params:', { page, limit, skip });
-
-    // Get total count and paginated words that are due for review
-    const query = {
-      $or: [
-        { status: { $in: ['new', null] } },
-        { nextReviewDate: { $lte: new Date() } }
-      ]
-    };
-
-    console.log('Executing query:', JSON.stringify(query));
-    
-    // First check if we need to seed the database
-    const total = await Word.countDocuments();
-    console.log('Total words in DB:', total);
-    
-    if (total === 0) {
-      console.log('No words found, seeding database...');
-      const sampleWordsWithDefaults = [...sampleWords, ...advancedWords].map(word => ({
-        ...word,
-        status: 'new',
-        lastReviewed: null,
-        nextReviewDate: new Date()
-      }));
-      
-      await Word.insertMany(sampleWordsWithDefaults);
-      console.log('Seeded database with words');
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Now get the paginated results
-    const words = await Word.find(query)
-      .sort({ nextReviewDate: 1 })
-      .skip(skip)
-      .limit(limit)
-      .exec();
-    
-    // Get the total count for pagination
-    const totalMatchingQuery = await Word.countDocuments(query);
-    
-    console.log('Returning words:', {
-      count: words.length,
-      page,
-      totalMatchingQuery,
-      hasMore: skip + words.length < totalMatchingQuery
+    await connectDB();
+
+    // Build query based on difficulty
+    const query: any = {};
+    if (difficulty !== 'all') {
+      query.difficulty = { $regex: new RegExp(`^${difficulty}$`, 'i') };
+    }
+
+    // Get user's progress to exclude words they've already learned
+    const userProgress = await VocabularyProgress.find({
+      userId,
+      status: { $in: ['learned', 'in_progress'] }
     });
+    const learnedWordIds = userProgress.map(p => p.wordId);
+    query._id = { $nin: learnedWordIds };
+
+    const totalWords = await Word.countDocuments(query);
+    const totalPages = Math.ceil(totalWords / limit);
+    const skip = (page - 1) * limit;
+
+    const words = await Word.find(query)
+      .sort({ difficulty: 1 })
+      .skip(skip)
+      .limit(limit);
 
     return NextResponse.json({
       words,
-      total: totalMatchingQuery,
-      page,
-      totalPages: Math.ceil(totalMatchingQuery / limit),
-      hasMore: skip + words.length < totalMatchingQuery
+      currentPage: page,
+      totalPages,
+      hasMore: page < totalPages
     });
+
   } catch (error) {
-    console.error('API Error:', error);
-    return NextResponse.json({ error: 'Failed to fetch words' }, { status: 500 });
+    console.error('Error fetching words:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch words' },
+      { status: 500 }
+    );
   }
 }
 

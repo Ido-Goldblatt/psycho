@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const ProgressSchema = new mongoose.Schema({
+const VocabularyProgressSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -29,8 +29,13 @@ const ProgressSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  lastReviewed: {
+    type: Date,
+    default: Date.now,
+  }
 }, {
   timestamps: true,
+  collection: 'vocabulary_progress' // Explicitly set collection name
 });
 
-export default mongoose.models.Progress || mongoose.model('Progress', ProgressSchema); 
+export default mongoose.models.VocabularyProgress || mongoose.model('VocabularyProgress', VocabularyProgressSchema); 

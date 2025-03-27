@@ -1,12 +1,11 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  return bcrypt.hash(password, 10);
 }
 
 export async function comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
@@ -20,18 +19,13 @@ export function generateToken(userId: string): string {
 export function verifyToken(token: string): { userId: string } | null {
   try {
     return jwt.verify(token, JWT_SECRET) as { userId: string };
-  } catch {
+  } catch (error) {
     return null;
   }
 }
 
-export function getAuthToken(): string | null {
-  const cookieStore = cookies();
-  return cookieStore.get('auth-token')?.value || null;
-}
-
 export function getCurrentUserId(): string | null {
-  const token = getAuthToken();
+  const token = cookies().get('auth-token')?.value;
   if (!token) return null;
   
   const decoded = verifyToken(token);

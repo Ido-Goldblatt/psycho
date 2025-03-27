@@ -1,50 +1,76 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
-import Word from '@/models/Word';
+import { prisma } from '@/lib/db';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    await connectDB();
-    const { status } = await request.json();
+    const session = await getServerSession(authOptions);
     
-    const word = await Word.findByIdAndUpdate(
-      params.id,
-      { 
-        $set: { 
-          status,
-          lastReviewed: new Date(),
-          nextReviewDate: calculateNextReviewDate(status)
-        }
-      },
-      { new: true }
-    );
-
-    if (!word) {
-      return NextResponse.json({ error: 'Word not found' }, { status: 404 });
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
 
-    return NextResponse.json(word);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update word' }, { status: 500 });
-  }
-}
+    const { status } = await request.json();
+    
+    // Get or create user
+    const user = await prisma.user.upsert({
+      where: { email: session.user.email },
+      update: {},
+      create: {
+        email: session.user.email,
+        name: session.user.name || null,
+      },
+    });
 
-function calculateNextReviewDate(status: string): Date {
-  const now = new Date();
-  switch (status) {
-    case 'known':
-      // Review in 7 days
-      return new Date(now.setDate(now.getDate() + 7));
-    case 'learning':
-      // Review in 1 day
-      return new Date(now.setDate(now.getDate() + 1));
-    case 'skip':
-      // Review in 3 days
-      return new Date(now.setDate(now.getDate() + 3));
-    default:
-      return now;
+    // Get or create word
+    const word = await prisma.word.upsert({
+      where: { id: params.id },
+      update: {},
+      create: {
+        id: params.id,
+        english: '', // These will be populated by your word creation process
+        hebrew: '',
+        example: '',
+        category: '',
+        difficulty: '',
+      },
+    });
+
+    // Update or create user word status
+    const userWord = await prisma.userWord.upsert({
+      where: {
+        userId_wordId: {
+          userId: user.id,
+          wordId: word.id,
+        },
+      },
+      update: {
+        status,
+        lastReviewed: new Date(),
+        nextReviewDate: status === 'learning' ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours from now for learning words
+      },
+      create: {
+        userId: user.id,
+        wordId: word.id,
+        status,
+        lastReviewed: new Date(),
+        nextReviewDate: status === 'learning' ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null,
+      },
+    });
+
+    return NextResponse.json(userWord);
+  } catch (error) {
+    console.error('Error updating word status:', error);
+    return NextResponse.json(
+      { error: 'Failed to update word status' },
+      { status: 500 }
+    );
   }
 } 

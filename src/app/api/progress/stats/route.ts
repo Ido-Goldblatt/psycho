@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
-import Progress from '@/models/Progress';
+import VocabularyProgress from '@/models/VocabularyProgress';
 import Word from '@/models/Word';
 
 export async function GET(request: Request) {
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     // Get all words and progress for the user
     const [words, progressEntries] = await Promise.all([
       Word.find(),
-      Progress.find({ userId }).sort({ createdAt: -1 })
+      VocabularyProgress.find({ userId }).sort({ createdAt: -1 })
     ]);
 
     // Calculate total words
@@ -41,57 +41,33 @@ export async function GET(request: Request) {
     let currentStreak = 0;
     let lastDate: Date | null = null;
 
-    for (const entry of progressEntries) {
-      const currentDate = new Date(entry.createdAt);
-      
+    // Sort progress entries by date
+    const sortedProgress = [...progressEntries].sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    // Calculate streak
+    for (const entry of sortedProgress) {
+      const entryDate = new Date(entry.createdAt);
+      const entryDay = entryDate.toDateString();
+
       if (!lastDate) {
+        lastDate = entryDate;
         currentStreak = 1;
-        lastDate = currentDate;
-        continue;
-      }
-
-      const dayDiff = Math.floor((lastDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (dayDiff <= 1) {
-        currentStreak++;
+        streak = 1;
       } else {
-        if (currentStreak > streak) {
-          streak = currentStreak;
+        const lastDay = lastDate.toDateString();
+        if (entryDay === lastDay) {
+          continue; // Skip same-day entries
         }
-        currentStreak = 1;
-      }
-      
-      lastDate = currentDate;
-    }
 
-    if (currentStreak > streak) {
-      streak = currentStreak;
-    }
-
-    // Calculate practice history (last 7 days)
-    const practiceHistory = [];
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    for (let i = 0; i < 7; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      date.setHours(0, 0, 0, 0);
-
-      const nextDate = new Date(date);
-      nextDate.setDate(nextDate.getDate() + 1);
-
-      const dayEntries = progressEntries.filter(p => {
-        const entryDate = new Date(p.createdAt);
-        return entryDate >= date && entryDate < nextDate;
-      });
-
-      if (dayEntries.length > 0) {
-        practiceHistory.push({
-          date: date.toISOString(),
-          correct: dayEntries.filter(p => p.isCorrect).length,
-          total: dayEntries.length
-        });
+        const daysDiff = Math.floor((lastDate.getTime() - entryDate.getTime()) / (1000 * 60 * 60 * 24));
+        if (daysDiff === 1) {
+          currentStreak++;
+          streak = Math.max(streak, currentStreak);
+        } else {
+          break; // Streak broken
+        }
       }
     }
 
@@ -101,11 +77,13 @@ export async function GET(request: Request) {
       inProgressWords,
       averageScore,
       streak,
-      lastPracticeDate: progressEntries[0]?.createdAt || null,
-      practiceHistory: practiceHistory.reverse()
+      recentProgress: recentProgress.length
     });
   } catch (error) {
-    console.error('Error fetching progress stats:', error);
-    return NextResponse.json({ error: 'Failed to fetch progress stats' }, { status: 500 });
+    console.error('Error fetching stats:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch stats' },
+      { status: 500 }
+    );
   }
 } 

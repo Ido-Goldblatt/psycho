@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Word {
   _id: string;
@@ -20,17 +21,22 @@ interface Progress {
   reviewCount: number;
 }
 
+interface DailyGoal {
+  minutes: number;
+  completed: number;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [words, setWords] = useState<Word[]>([]);
   const [progress, setProgress] = useState<Progress[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [dailyGoal, setDailyGoal] = useState<DailyGoal>({ minutes: 30, completed: 15 });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user data
         const userResponse = await fetch('/api/auth/me');
         if (!userResponse.ok) {
           router.push('/login');
@@ -39,7 +45,6 @@ export default function Dashboard() {
         const userData = await userResponse.json();
         setUser(userData.user);
 
-        // Fetch words and progress
         const [wordsResponse, progressResponse] = await Promise.all([
           fetch('/api/words'),
           fetch(`/api/progress?userId=${userData.user.id}`)
@@ -62,8 +67,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -76,146 +81,108 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
-        <div className="px-4 py-5 sm:px-0">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user?.name}!
+            שלום, {user?.name}!
           </h1>
+          <p className="mt-2 text-gray-600">הנה סיכום ההתקדמות שלך להיום</p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Link href="/dashboard/learn" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
+            <h3 className="text-lg font-semibold">התחל ללמוד</h3>
+            <p className="mt-1 text-sm text-indigo-100">מילים חדשות מחכות לך</p>
+          </Link>
+          <Link href="/dashboard/review" className="bg-green-600 hover:bg-green-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
+            <h3 className="text-lg font-semibold">חזרה</h3>
+            <p className="mt-1 text-sm text-green-100">{stats.nextReview} מילים לחזרה</p>
+          </Link>
+          <Link href="/dashboard/words" className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
+            <h3 className="text-lg font-semibold">אוצר מילים</h3>
+            <p className="mt-1 text-sm text-purple-100">צפה בכל המילים שלך</p>
+          </Link>
+        </div>
+
+        {/* Progress Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Daily Goal */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold mb-4">מטרה יומית</h2>
+            <div className="relative pt-1">
+              <div className="flex mb-2 items-center justify-between">
+                <div>
+                  <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200">
+                    התקדמות
+                  </span>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Total Words</dt>
-                    <dd className="text-lg font-semibold text-gray-900">{stats.totalWords}</dd>
-                  </dl>
+                <div className="text-right">
+                  <span className="text-xs font-semibold inline-block text-indigo-600">
+                    {Math.round((dailyGoal.completed / dailyGoal.minutes) * 100)}%
+                  </span>
                 </div>
               </div>
+              <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
+                <div 
+                  style={{ width: `${(dailyGoal.completed / dailyGoal.minutes) * 100}%` }}
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500"
+                ></div>
+              </div>
+              <p className="text-sm text-gray-600 text-center">
+                {dailyGoal.completed} מתוך {dailyGoal.minutes} דקות של למידה
+              </p>
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Learned Words</dt>
-                    <dd className="text-lg font-semibold text-gray-900">{stats.learnedWords}</dd>
-                  </dl>
-                </div>
+          {/* Learning Stats */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold mb-4">סטטיסטיקות</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-indigo-600">{stats.learnedWords}</p>
+                <p className="text-sm text-gray-600">מילים שנלמדו</p>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">In Progress</dt>
-                    <dd className="text-lg font-semibold text-gray-900">{stats.inProgress}</dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Next Review</dt>
-                    <dd className="text-lg font-semibold text-gray-900">{stats.nextReview}</dd>
-                  </dl>
-                </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-yellow-600">{stats.inProgress}</p>
+                <p className="text-sm text-gray-600">בתהליך למידה</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Recent Words Section */}
-        <div className="mt-8">
-          <div className="px-4 sm:px-0">
-            <h2 className="text-2xl font-bold text-gray-900">Recent Words</h2>
+        {/* Recent Activity */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-xl font-semibold">פעילות אחרונה</h2>
           </div>
-          <div className="mt-4">
-            <div className="flex flex-col">
-              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            English
-                          </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Hebrew
-                          </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Next Review
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {progress.slice(0, 5).map((item) => (
-                          <tr key={item._id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {item.wordId.english}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {item.wordId.hebrew}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                item.status === 'learned' ? 'bg-green-100 text-green-800' :
-                                item.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-gray-100 text-gray-800'
-                              }`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {item.nextReview ? new Date(item.nextReview).toLocaleDateString() : 'Not scheduled'}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+          <div className="divide-y divide-gray-200">
+            {progress.slice(0, 5).map((item) => (
+              <div key={item._id} className="px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{item.wordId.english}</p>
+                    <p className="text-sm text-gray-500">{item.wordId.hebrew}</p>
                   </div>
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    item.status === 'learned' ? 'bg-green-100 text-green-800' :
+                    item.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {item.status === 'learned' ? 'נלמד' : 
+                     item.status === 'in_progress' ? 'בתהליך' : 
+                     'לא התחיל'}
+                  </span>
                 </div>
+                {item.nextReview && (
+                  <p className="mt-1 text-xs text-gray-500">
+                    חזרה הבאה: {new Date(item.nextReview).toLocaleDateString('he-IL')}
+                  </p>
+                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
