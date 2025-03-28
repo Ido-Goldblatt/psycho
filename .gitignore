@@ -44,9 +44,6 @@ next-env.d.ts
 *.swp
 *.swo
 
-# Prisma
-/prisma/migrations/
-.prisma/
 
 # MongoDB
 *.mongodb

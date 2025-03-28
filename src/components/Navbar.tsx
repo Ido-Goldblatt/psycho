@@ -43,6 +43,15 @@ const Navbar = () => {
               תרגול
             </Link>
             <Link 
+              href="/simulation" 
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
+                ${isActive('/simulation') 
+                  ? 'text-indigo-600 bg-indigo-50' 
+                  : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'}`}
+            >
+              סימולציה
+            </Link>
+            <Link 
               href="/dashboard" 
               className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
                 ${isActive('/dashboard') 

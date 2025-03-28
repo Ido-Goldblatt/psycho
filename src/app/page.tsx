@@ -72,11 +72,11 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link href="/learn/conversation" className="group">
+          <Link href="/simulation" className="group">
             <div className="bg-white rounded-lg shadow-lg p-6 transition-transform duration-200 hover:scale-105">
-              <div className="text-indigo-600 text-4xl mb-4">💬</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">שיחה</h3>
-              <p className="text-gray-600">תרגל שיחה באנגלית עם תרחישים מהחיים</p>
+              <div className="text-indigo-600 text-4xl mb-4">🎮</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">סימולציה</h3>
+              <p className="text-gray-600">תרגל את האנגלית שלך בסביבה אינטראקטיבית</p>
             </div>
           </Link>
         </div>

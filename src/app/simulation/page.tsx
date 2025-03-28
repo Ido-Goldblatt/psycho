@@ -3,6 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+
+// Set up PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 interface SimulationState {
   answers: { [key: number]: number };
@@ -14,6 +21,7 @@ interface SimulationState {
 export default function SimulationMode() {
   const router = useRouter();
   const [user, setUser] = useState<{ id: string } | null>(null);
+  const [numPages, setNumPages] = useState<number | null>(null);
   const [simulationState, setSimulationState] = useState<SimulationState>({
     answers: {},
     timeLeft: 45 * 60, // 45 minutes in seconds
@@ -102,6 +110,10 @@ export default function SimulationMode() {
     }));
   };
 
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -142,22 +154,34 @@ export default function SimulationMode() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto pt-[90px] pb-[180px]">
-        <div className="px-16 py-4">
-          <p className="text-gray-700 mb-8 text-right">
-            בחלק זה מוצגים משפטים עם מילה או מילים חסרות. עבור כל שאלה, בחר את התשובה המתאימה ביותר להשלמת המשפט.
-          </p>
-          
-          {/* Questions */}
-          {Array.from({ length: 22 }, (_, i) => (
-            <div key={i} className="mb-6">
-              <div className="flex justify-end gap-2 mb-2">
-                <p className="font-semibold">{i + 1}.</p>
+        <div className="w-full">
+          <Document
+            file="/english1psychometric_srping_2024_acc.pdf"
+            className="w-full flex flex-col items-center"
+            onLoadSuccess={onDocumentLoadSuccess}
+            loading={
+              <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
-              <p className="text-gray-800 text-right">
-                זוהי שאלה מספר {i + 1}. התשובה _____ היא התשובה הנכונה.
-              </p>
-            </div>
-          ))}
+            }
+            error={
+              <div className="text-center text-gray-600">
+                Error loading PDF. <a href="/english1psychometric_srping_2024_acc.pdf" className="text-indigo-600 hover:underline">Download</a> instead.
+              </div>
+            }
+          >
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page 
+                key={`page_${index + 1}`}
+                pageNumber={index + 1} 
+                className="mb-4"
+                width={window.innerWidth}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                scale={1.0}
+              />
+            ))}
+          </Document>
         </div>
       </div>
 
