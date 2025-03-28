@@ -108,7 +108,7 @@ export default function ReviewMode() {
             )
             .slice(0, 3);
 
-          const hasRecentIncorrect = recentAttempts.some(p => !p.isCorrect);
+          const hasRecentIncorrect = recentAttempts.some((p: Progress) => !p.isCorrect);
           const lastAttempt = recentAttempts[0];
           const hoursSinceLastAttempt = lastAttempt ? 
             (Date.now() - new Date(lastAttempt.createdAt).getTime()) / (1000 * 60 * 60) : 
