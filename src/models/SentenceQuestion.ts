@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+interface ISentenceQuestion {
+  beforeBlank: string;
+  afterBlank: string;
+  options: Array<{
+    id: number;
+    text: string;
+  }>;
+  correctOptionId: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  category: string;
+}
+
 const OptionSchema = new mongoose.Schema({
   id: {
     type: Number,
@@ -36,8 +48,8 @@ const SentenceQuestionSchema = new mongoose.Schema({
     type: Number,
     required: true,
     validate: {
-      validator: function(value: number) {
-        return this.options.some((opt: any) => opt.id === value);
+      validator: function(this: ISentenceQuestion, value: number) {
+        return this.options.some((opt) => opt.id === value);
       },
       message: 'Correct option ID must match one of the provided options'
     }

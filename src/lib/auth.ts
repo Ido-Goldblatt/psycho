@@ -24,8 +24,8 @@ export function verifyToken(token: string): { userId: string } | null {
   }
 }
 
-export function getCurrentUserId(): string | null {
-  const token = cookies().get('auth-token')?.value;
+export async function  getCurrentUserId(): Promise<string | null> {
+  const token = (await cookies()).get('auth-token')?.value;
   if (!token) return null;
   
   const decoded = verifyToken(token);

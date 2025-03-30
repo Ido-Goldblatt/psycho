@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
+import Word from '@/models/Word';
 
 export async function POST(request: Request) {
   try {
@@ -13,20 +13,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const { db } = await connectToDatabase();
+    await connectToDatabase();
     
-    const result = await db.collection('words').updateOne(
-      { _id: new ObjectId(wordId) },
+    const result = await Word.findByIdAndUpdate(
+      wordId,
       { 
-        $set: { 
-          status,
-          lastReviewed: new Date(),
-          nextReview: status === 'learning' ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // Set next review for 24h later if status is 'learning'
-        } 
-      }
+        status,
+        lastReviewed: new Date(),
+        nextReview: status === 'learning' ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // Set next review for 24h later if status is 'learning'
+      },
+      { new: true }
     );
 
-    if (result.modifiedCount === 0) {
+    if (!result) {
       return NextResponse.json(
         { error: 'Word not found' },
         { status: 404 }

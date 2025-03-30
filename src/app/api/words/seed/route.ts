@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
+import Word from '@/models/Word';
 
 const sampleWords = [
   {
@@ -36,17 +37,17 @@ const sampleWords = [
 
 export async function GET() {
   try {
-    const { db } = await connectToDatabase();
+    await connectToDatabase();
     
     // Clear existing words
-    await db.collection('words').deleteMany({});
+    await Word.deleteMany({});
     
     // Insert sample words
-    const result = await db.collection('words').insertMany(sampleWords);
+    const result = await Word.insertMany(sampleWords);
 
     return NextResponse.json({ 
       message: 'Database seeded successfully',
-      insertedCount: result.insertedCount 
+      insertedCount: result.length 
     });
   } catch (error) {
     console.error('Error seeding database:', error);

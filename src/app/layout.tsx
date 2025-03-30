@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
-import { TimeTrackingProvider } from '@/components/TimeTrackingProvider'
-import TimeTrackingLayout from '@/components/TimeTrackingLayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,15 +20,12 @@ export default function RootLayout({
       <body 
         className={`${inter.className} min-h-screen bg-gray-50`}
         suppressHydrationWarning
+        style={{alignItems: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'column'}}
       >
-        <TimeTrackingProvider>
-          <TimeTrackingLayout>
-            <Navbar />
-            <main className="container mx-auto px-4 py-8">
-              {children}
-            </main>
-          </TimeTrackingLayout>
-        </TimeTrackingProvider>
+          <Navbar />
+          <main className="container  px-4 py-8" style={{width: '90%', maxWidth: '1280px' }}>
+            {children}
+          </main>
       </body>
     </html>
   )

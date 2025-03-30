@@ -6,7 +6,7 @@ import { getCurrentUserId } from '@/lib/auth';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const userId = getCurrentUserId();
+    const userId = await getCurrentUserId();
 
     if (!userId) {
       return NextResponse.json(
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const userId = getCurrentUserId();
+    const userId = await getCurrentUserId();
 
     if (!userId) {
       return NextResponse.json(

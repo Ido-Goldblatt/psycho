@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Document, Page } from 'react-pdf';
-import { pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-
-// Set up PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import PDFViewer from '@/components/PDFViewer';
 
 interface SimulationState {
   answers: { [key: number]: number };
@@ -21,7 +14,6 @@ interface SimulationState {
 export default function SimulationMode() {
   const router = useRouter();
   const [user, setUser] = useState<{ id: string } | null>(null);
-  const [numPages, setNumPages] = useState<number | null>(null);
   const [simulationState, setSimulationState] = useState<SimulationState>({
     answers: {},
     timeLeft: 45 * 60, // 45 minutes in seconds
@@ -110,10 +102,6 @@ export default function SimulationMode() {
     }));
   };
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-  }
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -124,18 +112,6 @@ export default function SimulationMode() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Main Navigation - Always visible */}
-      <nav className="fixed top-0 left-0 right-0 bg-white z-50 border-b">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-indigo-600">PsychoPrep</Link>
-          <div className="flex items-center gap-8">
-            <Link href="/" className="text-gray-600">אזור מילים</Link>
-            <Link href="/" className="text-gray-600">תרגול</Link>
-            <Link href="/" className="text-gray-600">התקדמות</Link>
-          </div>
-        </div>
-      </nav>
-
       {/* Controls Bar */}
       <div className="fixed top-[56px] left-0 right-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center backdrop-blur-sm bg-white/20">
@@ -155,33 +131,7 @@ export default function SimulationMode() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto pt-[90px] pb-[180px]">
         <div className="w-full">
-          <Document
-            file="/english1psychometric_srping_2024_acc.pdf"
-            className="w-full flex flex-col items-center"
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading={
-              <div className="flex justify-center items-center h-[calc(100vh-200px)]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-              </div>
-            }
-            error={
-              <div className="text-center text-gray-600">
-                Error loading PDF. <a href="/english1psychometric_srping_2024_acc.pdf" className="text-indigo-600 hover:underline">Download</a> instead.
-              </div>
-            }
-          >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page 
-                key={`page_${index + 1}`}
-                pageNumber={index + 1} 
-                className="mb-4"
-                width={window.innerWidth}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-                scale={1.0}
-              />
-            ))}
-          </Document>
+          <PDFViewer file="/english1psychometric_srping_2024_acc.pdf" />
         </div>
       </div>
 
