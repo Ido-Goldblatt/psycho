@@ -1,0 +1,1049 @@
+[
+    { "english": "abbreviate", "hebrew": "לקצר", "example": "You can abbreviate ‘Doctor’ as ‘Dr.’", "category": "Vocabulary", "difficulty": "medium" },
+    { "english": "abdomen", "hebrew": "בטן", "example": "He felt pain in his abdomen after eating too much.", "category": "Anatomy", "difficulty": "easy" },
+    { "english": "ability", "hebrew": "יכולת", "example": "She has the ability to solve complex problems.", "category": "General", "difficulty": "easy" },
+    { "english": "abnormal", "hebrew": "לא נורמלי", "example": "The doctor noted an abnormal heart rhythm.", "category": "Medical", "difficulty": "medium" },
+    { "english": "abolish", "hebrew": "לבטל", "example": "The government decided to abolish the old law.", "category": "Politics", "difficulty": "hard" },
+    { "english": "above", "hebrew": "מעל", "example": "The airplane flew above the clouds.", "category": "Prepositions", "difficulty": "easy" },
+    { "english": "absolute", "hebrew": "מוחלט, מושלם", "example": "His decision was absolute and final.", "category": "Adjectives", "difficulty": "medium" },
+    { "english": "absolutely", "hebrew": "באופן מוחלט", "example": "I absolutely agree with your statement.", "category": "Adverbs", "difficulty": "medium" },
+    { "english": "absorb", "hebrew": "לקלוט, לספוג, להתעמק", "example": "The sponge can absorb a lot of water.", "category": "Verbs", "difficulty": "medium" },
+    { "english": "absorbent", "hebrew": "בעל כושר ספיגה", "example": "This towel is highly absorbent.", "category": "Adjectives", "difficulty": "medium" },
+    { "english": "acceptable", "hebrew": "מקובל", "example": "Your behavior must be socially acceptable.", "category": "Adjectives", "difficulty": "medium" },
+    { "english": "account", "hebrew": "חשבון", "example": "He opened a bank account.", "category": "Finance", "difficulty": "easy" },
+    { "english": "admit into", "hebrew": "להכניס", "example": "Only VIP members are admitted into the club.", "category": "Phrasal Verbs", "difficulty": "hard" },
+    { "english": "admittance", "hebrew": "הכנסה", "example": "No admittance without a ticket.", "category": "Nouns", "difficulty": "hard" },
+    { "english": "ambiguity", "hebrew": "דו משמעות", "example": "His statement was full of ambiguity.", "category": "Linguistics", "difficulty": "hard" },
+    { "english": "appeal", "hebrew": "לבקש", "example": "The lawyer appealed to the judge for leniency.", "category": "Legal", "difficulty": "medium" },
+    { "english": "approval", "hebrew": "אישור", "example": "She received her manager’s approval.", "category": "Business", "difficulty": "easy" },
+    { "english": "argument", "hebrew": "טענה", "example": "His argument was logical and convincing.", "category": "Debate", "difficulty": "medium" },
+    { "english": "arouse", "hebrew": "לעורר", "example": "The speech aroused strong emotions.", "category": "Verbs", "difficulty": "medium" },
+    { "english": "assertively", "hebrew": "בביטחון", "example": "She spoke assertively during the meeting.", "category": "Adverbs", "difficulty": "medium" },
+    { "english": "blindness", "hebrew": "עיוורון", "example": "Blindness can be caused by various diseases.", "category": "Medical", "difficulty": "medium" },
+    { "english": "bother", "hebrew": "להפריע", "example": "Don’t bother me while I’m working.", "category": "Verbs", "difficulty": "easy" },
+    { "english": "brake", "hebrew": "לעצור", "example": "He quickly braked to avoid hitting the dog.", "category": "Driving", "difficulty": "easy" },
+    { "english": "bright", "hebrew": "בהיר", "example": "The sun is very bright today.", "category": "Adjectives", "difficulty": "easy" },
+    { "english": "broaden", "hebrew": "להרחיב", "example": "Traveling can broaden your perspective.", "category": "Verbs", "difficulty": "medium" },
+    { "english": "candidly", "hebrew": "בכנות", "example": "He spoke candidly about his past mistakes.", "category": "Adverbs", "difficulty": "medium" },
+    { "english": "consideration", "hebrew": "עיון", "example": "The proposal is under consideration.", "category": "Nouns", "difficulty": "medium" },
+    { "english": "consolation", "hebrew": "נחמה", "example": "He offered words of consolation to his friend.", "category": "Emotions", "difficulty": "medium" },
+    { "english": "contradiction", "hebrew": "ניגוד", "example": "There is a contradiction in his statements.", "category": "Logic", "difficulty": "hard" },
+    { "english": "contribution", "hebrew": "תרומה", "example": "His contribution to the project was significant.", "category": "Business", "difficulty": "easy" },
+    {
+        "english": "Conversion",
+        "hebrew": "החלפה",
+        "example": "The conversion of the old factory into apartments took two years.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Critique",
+        "hebrew": "לבקר",
+        "example": "The professor asked the students to critique each other’s essays.",
+        "category": "Language",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Crossroads",
+        "hebrew": "צומת",
+        "example": "She stood at a crossroads, unsure which career path to choose.",
+        "category": "Geography",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Dedicated",
+        "hebrew": "הקדיש",
+        "example": "He dedicated his book to his late grandmother.",
+        "category": "Emotions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Dedication",
+        "hebrew": "הקדשה",
+        "example": "Her dedication to her work earned her a promotion.",
+        "category": "Emotions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Deduction",
+        "hebrew": "מסקנה",
+        "example": "Sherlock Holmes made a brilliant deduction about the suspect.",
+        "category": "Logic",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Deeply",
+        "hebrew": "באופן מעמיק",
+        "example": "He was deeply moved by the story.",
+        "category": "Adverbs",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Definitely",
+        "hebrew": "בהחלט",
+        "example": "She definitely wants to attend the concert.",
+        "category": "Adverbs",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Deliberation",
+        "hebrew": "דיון",
+        "example": "After much deliberation, they decided to invest in the startup.",
+        "category": "Politics",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Deliberative",
+        "hebrew": "דיוני",
+        "example": "The council held a deliberative session on the budget.",
+        "category": "Politics",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Detection",
+        "hebrew": "גילוי",
+        "example": "Early detection of the disease can save lives.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Distraction",
+        "hebrew": "הסחת דעת",
+        "example": "The noise outside was a major distraction during the exam.",
+        "category": "Psychology",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Disturb",
+        "hebrew": "להפריע",
+        "example": "Please do not disturb me while I’m working.",
+        "category": "Actions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Efficiency",
+        "hebrew": "יעילות",
+        "example": "The new system improved work efficiency significantly.",
+        "category": "Business",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Enlighten",
+        "hebrew": "להסביר",
+        "example": "Can you enlighten me about this topic?",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Ensure",
+        "hebrew": "להבטיח",
+        "example": "Please ensure all doors are locked before leaving.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Evolve",
+        "hebrew": "לפתח",
+        "example": "Over time, languages evolve and change.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Examination",
+        "hebrew": "בחינה",
+        "example": "The final examination will be held next Monday.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Expansion",
+        "hebrew": "התרחבות",
+        "example": "The company is planning an expansion into new markets.",
+        "category": "Business",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Expectancy",
+        "hebrew": "ציפייה",
+        "example": "The life expectancy in this country has increased.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Expensive",
+        "hebrew": "יקר",
+        "example": "This watch is very expensive.",
+        "category": "Finance",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Factor",
+        "hebrew": "גורם",
+        "example": "Exercise is an important factor in maintaining good health.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Far",
+        "hebrew": "רחוק",
+        "example": "The store is too far to walk to.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Farther",
+        "hebrew": "יותר רחוק",
+        "example": "He ran farther than he ever had before.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Fear",
+        "hebrew": "פחד",
+        "example": "She overcame her fear of heights.",
+        "category": "Emotions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Formation",
+        "hebrew": "מבנה",
+        "example": "The rock formation was created over thousands of years.",
+        "category": "Geology",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Foundation",
+        "hebrew": "יסוד",
+        "example": "Trust is the foundation of a good relationship.",
+        "category": "Philosophy",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Generate",
+        "hebrew": "לייצר",
+        "example": "Solar panels generate electricity from sunlight.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Genesis",
+        "hebrew": "בראשית",
+        "example": "The genesis of the idea came from an old book.",
+        "category": "History",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Growth",
+        "hebrew": "גדילה",
+        "example": "The company has seen rapid growth in the past year.",
+        "category": "Business",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Harm",
+        "hebrew": "לפגוע",
+        "example": "Smoking can harm your lungs.",
+        "category": "Health",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Height",
+        "hebrew": "גובה",
+        "example": "The height of the building is 50 meters.",
+        "category": "Math",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Horrify",
+        "hebrew": "להפחיד",
+        "example": "The horror movie horrified the audience.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Insistence",
+        "hebrew": "התעקשות",
+        "example": "Her insistence on fairness impressed the team.",
+        "category": "Personality",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Inspect",
+        "hebrew": "לבדוק",
+        "example": "The mechanic will inspect the car for issues.",
+        "category": "Actions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Interpretation",
+        "hebrew": "פרשנות",
+        "example": "His interpretation of the poem was unique.",
+        "category": "Literature",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Intriguing",
+        "hebrew": "מעניין",
+        "example": "The mystery novel had an intriguing plot.",
+        "category": "Literature",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Invention",
+        "hebrew": "המצאה",
+        "example": "The lightbulb was an important invention.",
+        "category": "Technology",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Joint",
+        "hebrew": "חיבור",
+        "example": "The joint effort of both teams led to success.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Journey",
+        "hebrew": "טיול",
+        "example": "They went on a long journey through the mountains.",
+        "category": "Travel",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Low",
+        "hebrew": "נמוך",
+        "example": "The temperature is very low today.",
+        "category": "Weather",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Maturity",
+        "hebrew": "בגרות",
+        "example": "Maturity comes with experience and time.",
+        "category": "Psychology",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Mixture",
+        "hebrew": "תערובת",
+        "example": "This cake is a mixture of different flavors.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Modification",
+        "hebrew": "השתנות",
+        "example": "The design went through several modifications.",
+        "category": "Engineering",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Obedience",
+        "hebrew": "צייתנות",
+        "example": "Dogs are trained for obedience.",
+        "category": "Behavior",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Preventive",
+        "hebrew": "מונע",
+        "example": "Washing hands is a preventive measure against disease.",
+        "category": "Health",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Purity",
+        "hebrew": "טוהר",
+        "example": "The purity of the water was tested in a lab.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Recommendation",
+        "hebrew": "המלצה",
+        "example": "She gave me a recommendation for a good book.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Recovery",
+        "hebrew": "החלמה",
+        "example": "His recovery from surgery was quick.",
+        "category": "Health",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Regional",
+        "hebrew": "אזורי",
+        "example": "The regional economy is improving.",
+        "category": "Geography",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Relief",
+        "hebrew": "רווחה",
+        "example": "The medicine provided instant relief from pain.",
+        "category": "Health",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Remind",
+        "hebrew": "להזכיר",
+        "example": "Please remind me to call him later.",
+        "category": "Actions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Repetition",
+        "hebrew": "חזרה",
+        "example": "Repetition helps with learning new words.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Replacement",
+        "hebrew": "חלופה",
+        "example": "We need a replacement for the broken chair.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Representative",
+        "hebrew": "ייצוגי",
+        "example": "She is the representative of our class.",
+        "category": "Politics",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Reproduction",
+        "hebrew": "שחזור",
+        "example": "The museum has a reproduction of the famous painting.",
+        "category": "Art",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Requirement",
+        "hebrew": "דרישה",
+        "example": "A degree is a requirement for this job.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Rhythm",
+        "hebrew": "קצב",
+        "example": "The song has a great rhythm.",
+        "category": "Music",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Scare",
+        "hebrew": "להפחיד",
+        "example": "The loud noise gave me a scare.",
+        "category": "Emotions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Sensitivity",
+        "hebrew": "רגישות",
+        "example": "His sensitivity to criticism made him cautious.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Shrewd",
+        "hebrew": "חכם",
+        "example": "He is a shrewd businessman who knows how to negotiate.",
+        "category": "Personality",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Stink",
+        "hebrew": "להסריח",
+        "example": "The garbage began to stink after a few days.",
+        "category": "Senses",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Supposition",
+        "hebrew": "הנחה",
+        "example": "His argument is based on a false supposition.",
+        "category": "Logic",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Task",
+        "hebrew": "מטלה",
+        "example": "Completing the project was a difficult task.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Tolerance",
+        "hebrew": "סיבולת",
+        "example": "Athletes build tolerance through intense training.",
+        "category": "Health",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Training",
+        "hebrew": "אימון",
+        "example": "The athlete follows a strict training schedule.",
+        "category": "Sports",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Valuate",
+        "hebrew": "לאמוד",
+        "example": "The appraiser will valuate the house before sale.",
+        "category": "Finance",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Verdict",
+        "hebrew": "פסק דין",
+        "example": "The jury delivered a guilty verdict.",
+        "category": "Law",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Verifiable",
+        "hebrew": "בר אימות",
+        "example": "Scientific results must be verifiable.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Vote",
+        "hebrew": "להצביע",
+        "example": "Citizens have the right to vote in elections.",
+        "category": "Politics",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Wealth",
+        "hebrew": "עושר",
+        "example": "His wealth allowed him to travel the world.",
+        "category": "Finance",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Within",
+        "hebrew": "בפנים",
+        "example": "The treasure was hidden within the cave.",
+        "category": "Prepositions",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Zip",
+        "hebrew": "זמזום",
+        "example": "I heard the zip of a passing bullet.",
+        "category": "Sounds",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Accessible",
+        "hebrew": "נגיש",
+        "example": "This building is accessible for wheelchair users.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Accidental",
+        "hebrew": "מקרי",
+        "example": "His discovery was accidental but revolutionary.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Accompaniment",
+        "hebrew": "ליווי",
+        "example": "The violinist played with a piano accompaniment.",
+        "category": "Music",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Adherence",
+        "hebrew": "היצמדות",
+        "example": "Strict adherence to rules is necessary in sports.",
+        "category": "Discipline",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Agglomeration",
+        "hebrew": "ערימה",
+        "example": "The city is an agglomeration of cultures and traditions.",
+        "category": "Geography",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Aim",
+        "hebrew": "תכלית",
+        "example": "Her aim is to become a doctor.",
+        "category": "Goals",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Allowable",
+        "hebrew": "חוקי",
+        "example": "The maximum allowable speed is 100 km/h.",
+        "category": "Law",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Anguish",
+        "hebrew": "להתייסר",
+        "example": "He was in anguish after hearing the bad news.",
+        "category": "Emotions",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Annex",
+        "hebrew": "לצרף",
+        "example": "The country decided to annex the neighboring territory.",
+        "category": "Politics",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Ascertain",
+        "hebrew": "לוודא",
+        "example": "The detective tried to ascertain the truth.",
+        "category": "Investigation",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Assertion",
+        "hebrew": "טענה",
+        "example": "His assertion was backed by strong evidence.",
+        "category": "Debate",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Audacious",
+        "hebrew": "נועז",
+        "example": "Her audacious plan surprised everyone.",
+        "category": "Personality",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Audience",
+        "hebrew": "קהל",
+        "example": "The audience applauded at the end of the show.",
+        "category": "Entertainment",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Authoritative",
+        "hebrew": "מהימן",
+        "example": "The book is considered an authoritative source on history.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Avaricious",
+        "hebrew": "חמדן",
+        "example": "The avaricious king taxed his people heavily.",
+        "category": "Personality",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Awe",
+        "hebrew": "לעורר יראת כבוד",
+        "example": "The beauty of the mountains filled him with awe.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Axis",
+        "hebrew": "ציר",
+        "example": "The Earth rotates around its axis.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Bait",
+        "hebrew": "פיתיון",
+        "example": "The fisherman used worms as bait.",
+        "category": "Fishing",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Belief",
+        "hebrew": "אמונה",
+        "example": "Her belief in justice was unshakable.",
+        "category": "Philosophy",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Bestow",
+        "hebrew": "להעניק",
+        "example": "The king decided to bestow knighthood upon the warrior.",
+        "category": "History",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Bridle",
+        "hebrew": "לרסן",
+        "example": "He tried to bridle his anger.",
+        "category": "Emotions",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Brutish",
+        "hebrew": "בהמי",
+        "example": "His brutish behavior scared everyone away.",
+        "category": "Personality",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Candid",
+        "hebrew": "כן",
+        "example": "She gave a candid response to the difficult question.",
+        "category": "Personality",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Certify",
+        "hebrew": "לאשר",
+        "example": "The doctor will certify that he is healthy.",
+        "category": "Legal",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Characteristic",
+        "hebrew": "מובהק",
+        "example": "Kindness is a characteristic of a good leader.",
+        "category": "Personality",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Complaisance",
+        "hebrew": "נכונות לרצות אחרים",
+        "example": "His complaisance made him easy to work with.",
+        "category": "Personality",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Composition",
+        "hebrew": "חיבור",
+        "example": "She wrote a beautiful musical composition.",
+        "category": "Music",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Compulsory",
+        "hebrew": "של חובה",
+        "example": "Education is compulsory in many countries.",
+        "category": "Law",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Confidential",
+        "hebrew": "חסוי",
+        "example": "The company keeps client records confidential.",
+        "category": "Legal",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Conquer",
+        "hebrew": "לכבוש",
+        "example": "The general sought to conquer new lands.",
+        "category": "History",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Conquest",
+        "hebrew": "כיבוש",
+        "example": "The conquest of the city took several months.",
+        "category": "History",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Constitution",
+        "hebrew": "חוקה",
+        "example": "The country's constitution guarantees freedom of speech.",
+        "category": "Law",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Deducible",
+        "hebrew": "ניתן להסקה",
+        "example": "The answer is deducible from the given facts.",
+        "category": "Logic",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Derivation",
+        "hebrew": "גזירה",
+        "example": "The derivation of the word comes from Latin.",
+        "category": "Linguistics",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Destiny",
+        "hebrew": "גורל",
+        "example": "She believes her destiny is to help others.",
+        "category": "Philosophy",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Devotion",
+        "hebrew": "התמסרות",
+        "example": "Her devotion to her family was admirable.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Dictation",
+        "hebrew": "הכתבה",
+        "example": "The teacher gave the students a dictation exercise.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Discrepancy",
+        "hebrew": "שוני",
+        "example": "There was a discrepancy between the two reports.",
+        "category": "Logic",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Dispensable",
+        "hebrew": "שאפשר לוותר עליו",
+        "example": "Luxury items are dispensable during an economic crisis.",
+        "category": "General",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Distortion",
+        "hebrew": "סילוף",
+        "example": "The news report contained a distortion of the facts.",
+        "category": "Media",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Distribution",
+        "hebrew": "תפוצה",
+        "example": "The distribution of goods was delayed due to the storm.",
+        "category": "Economy",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Diversion",
+        "hebrew": "הטיה",
+        "example": "The magician used a diversion to trick the audience.",
+        "category": "Entertainment",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Domestic",
+        "hebrew": "ביתי",
+        "example": "Domestic cats are different from wild cats.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Durable",
+        "hebrew": "יציב",
+        "example": "This material is very durable and lasts for years.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Emergent",
+        "hebrew": "מגיח",
+        "example": "An emergent problem needs immediate attention.",
+        "category": "General",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Employment",
+        "hebrew": "עיסוק",
+        "example": "She found employment in the tech industry.",
+        "category": "Career",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Enlightened",
+        "hebrew": "נאור",
+        "example": "He had an enlightened view on social issues.",
+        "category": "Philosophy",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Eruption",
+        "hebrew": "התפרצות",
+        "example": "The volcano's eruption was seen from miles away.",
+        "category": "Nature",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Essential",
+        "hebrew": "מהותי",
+        "example": "Water is essential for life.",
+        "category": "General",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Estimate",
+        "hebrew": "להעריך",
+        "example": "The mechanic estimated the cost of repairs.",
+        "category": "Finance",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Eulogy",
+        "hebrew": "הספד",
+        "example": "He gave a touching eulogy at the funeral.",
+        "category": "Culture",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Evacuate",
+        "hebrew": "לפנות",
+        "example": "Residents were told to evacuate before the hurricane.",
+        "category": "Safety",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Evacuation",
+        "hebrew": "פינוי",
+        "example": "The evacuation of the city was completed in time.",
+        "category": "Safety",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Eventual",
+        "hebrew": "סופי",
+        "example": "The eventual winner of the race was unexpected.",
+        "category": "General",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Evidence",
+        "hebrew": "ראיה",
+        "example": "The detective found new evidence in the case.",
+        "category": "Law",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Explore",
+        "hebrew": "לחקור",
+        "example": "Scientists explore new planets for signs of life.",
+        "category": "Science",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Extensive",
+        "hebrew": "מקיף",
+        "example": "The report included extensive research.",
+        "category": "Education",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Factory",
+        "hebrew": "מפעל",
+        "example": "The factory produces thousands of cars every year.",
+        "category": "Industry",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Fascination",
+        "hebrew": "משיכה",
+        "example": "He has a fascination with ancient history.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Fiction",
+        "hebrew": "סיפורת",
+        "example": "She loves reading fiction novels.",
+        "category": "Literature",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Figure",
+        "hebrew": "דמות",
+        "example": "The book describes an important historical figure.",
+        "category": "History",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Fleet",
+        "hebrew": "מהיר",
+        "example": "The fleet horse quickly reached the finish line.",
+        "category": "General",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Foreseeable",
+        "hebrew": "צפוי מראש",
+        "example": "The company’s success is foreseeable.",
+        "category": "Future",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Fracture",
+        "hebrew": "להישבר",
+        "example": "He fractured his leg while skiing.",
+        "category": "Health",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Fringe",
+        "hebrew": "גדיל",
+        "example": "The dress had a beautiful fringe along the bottom.",
+        "category": "Fashion",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Generous",
+        "hebrew": "נדיב",
+        "example": "She made a generous donation to charity.",
+        "category": "Personality",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Germ",
+        "hebrew": "ראשית",
+        "example": "The germ of the idea started in college.",
+        "category": "Biology",
+        "difficulty": "hard"
+      },
+      {
+        "english": "Glare",
+        "hebrew": "להביט בזעם",
+        "example": "She glared at him after the argument.",
+        "category": "Emotions",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Identity",
+        "hebrew": "זהות",
+        "example": "He struggled with his cultural identity.",
+        "category": "Sociology",
+        "difficulty": "easy"
+      },
+      {
+        "english": "Imply",
+        "hebrew": "לרמוז",
+        "example": "His tone implied that he was upset.",
+        "category": "Communication",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Inanimate",
+        "hebrew": "דומם",
+        "example": "A rock is an inanimate object.",
+        "category": "Science",
+        "difficulty": "medium"
+      },
+      {
+        "english": "Incidental",
+        "hebrew": "מקרי",
+        "example": "Their meeting was purely incidental.",
+        "category": "General",
+        "difficulty": "hard"
+      }
+
+
+]
