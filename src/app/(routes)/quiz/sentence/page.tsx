@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { trackMistakenWord } from '@/lib/quiz';
 
 interface Option {
   id: number;
@@ -101,6 +102,19 @@ export default function SentenceCompletionMode() {
     if (!user || !quizState.currentQuestion) return;
     
     const isCorrect = selectedOptionId === quizState.currentQuestion.correctOptionId;
+    const selectedOption = quizState.currentQuestion.options.find(opt => opt.id === selectedOptionId);
+
+    if (!isCorrect && selectedOption) {
+      // Track mistaken word
+      await trackMistakenWord(
+        quizState.currentQuestion._id,
+        quizState.currentQuestion.beforeBlank + ' ___ ' + quizState.currentQuestion.afterBlank,
+        quizState.currentQuestion.options.find(opt => opt.id === quizState.currentQuestion?.correctOptionId)?.text || '',
+        selectedOption.text,
+        'sentence'
+      );
+    }
+
     const newScore = Math.round((quizState.correctAnswers + (isCorrect ? 1 : 0)) / (quizState.totalQuestions + 1) * 100);
     const newStreak = isCorrect ? quizState.streak + 1 : 0;
 

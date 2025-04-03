@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { trackMistakenWord } from '@/lib/quiz';
 
 interface Word {
   _id: string;
@@ -217,20 +218,28 @@ export default function PracticeMode() {
   };
 
   const handleAnswer = async (selectedWord: Word | null) => {
-    if (!user) return;
-    
-    const isCorrect = selectedWord?._id === quizState.currentWord?._id;
-    const newScore = Math.round((quizState.correctAnswers + (isCorrect ? 1 : 0)) / (quizState.questionIndex + 1) * 100);
-    const newStreak = isCorrect ? quizState.streak + 1 : 0;
+    if (!selectedWord || !quizState.currentWord) return;
+
+    const isCorrect = selectedWord._id === quizState.currentWord._id;
+
+    if (!isCorrect && quizState.currentWord) {
+      // Track mistaken word
+      await trackMistakenWord(
+        quizState.currentWord._id,
+        quizState.currentWord.hebrew,
+        quizState.currentWord.english,
+        selectedWord.english || '',
+        'vocabulary'
+      );
+    }
 
     setQuizState((prev) => ({
       ...prev,
-      score: newScore,
-      showResult: true,
       showCorrectAnswer: true,
-      streak: newStreak,
-      correctAnswers: prev.correctAnswers + (isCorrect ? 1 : 0),
-      incorrectAnswers: prev.incorrectAnswers + (isCorrect ? 0 : 1),
+      correctAnswers: isCorrect ? prev.correctAnswers + 1 : prev.correctAnswers,
+      incorrectAnswers: !isCorrect ? prev.incorrectAnswers + 1 : prev.incorrectAnswers,
+      streak: isCorrect ? prev.streak + 1 : 0,
+      score: isCorrect ? prev.score + 1 : prev.score,
     }));
 
     // Post progress
@@ -241,8 +250,8 @@ export default function PracticeMode() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: user.id,
-          wordId: quizState.currentWord?._id,
+          userId: user?.id,
+          wordId: quizState.currentWord._id,
           isCorrect,
           status: isCorrect ? 'learned' : 'in_progress',
           nextReview: isCorrect 

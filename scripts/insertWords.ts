@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
-import Word from '../src/models/Word.js';
+import Word from '../src/models/Word';
+import { connectToDatabase } from '../src/lib/mongodb';
 
 // Load environment variables
 dotenv.config();
@@ -15,8 +15,8 @@ const __dirname = dirname(__filename);
 
 async function insertWords() {
   try {
-    // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI);
+    // Connect to MongoDB using our unified connection utility
+    await connectToDatabase();
     console.log('Connected to MongoDB');
 
     // Read the JSON file

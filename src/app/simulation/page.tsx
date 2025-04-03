@@ -13,34 +13,34 @@ interface SimulationState {
 
 export default function SimulationMode() {
   const router = useRouter();
-  const [user, setUser] = useState<{ id: string } | null>(null);
+  const [user, setUser] = useState<{ id: string } | null>({id:'ido'});
   const [simulationState, setSimulationState] = useState<SimulationState>({
     answers: {},
     timeLeft: 45 * 60, // 45 minutes in seconds
     isFinished: false,
     isMapView: false,
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userResponse = await fetch('/api/auth/me');
-        if (!userResponse.ok) {
-          router.push('/login');
-          return;
-        }
-        const userData = await userResponse.json();
-        setUser(userData.user);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const userResponse = await fetch('/api/auth/me');
+  //       if (!userResponse.ok) {
+  //         router.push('/login');
+  //         return;
+  //       }
+  //       const userData = await userResponse.json();
+  //       setUser(userData.user);
+  //     } catch (error) {
+  //       console.error('Error fetching user:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchUser();
-  }, [router]);
+  //   fetchUser();
+  // }, [router]);
 
   useEffect(() => {
     if (!simulationState.isFinished && simulationState.timeLeft > 0) {
