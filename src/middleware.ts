@@ -12,9 +12,7 @@ export function middleware(request: NextRequest) {
   }
 
   // If trying to access protected pages while logged out, redirect to login
-  if (!isAuthPage && !token) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  
 
   return NextResponse.next()
 }
